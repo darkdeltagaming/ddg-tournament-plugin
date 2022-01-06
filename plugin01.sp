@@ -26,24 +26,20 @@ public Plugin myinfo =
 //--------------------------------------------------------------------------------------------------------------------------//
 
 //static bool matchupDone = false;
-ConVar g_cvWarmupTime;
 static bool _debug = true;
 
 public void OnPluginStart()
 {
 	g_Game = GetEngineVersion();
-	if(g_Game != Engine_CSGO && g_Game != Engine_CSS)
+	if(g_Game != Engine_CSGO)
 	{
-		SetFailState("This plugin is for CSGO/CSS only.");	
+		SetFailState("This plugin is for CSGO only.");	
 	}
 	
 	if(_debug)PrintToServer("---> plugin01 loaded");
-	
-	g_cvWarmupTime = FindConVar("mp_warmuptime");
 }
 
 public void OnMapStart()
 {
 	if(_debug)PrintToServer("---> New map started");
-	g_cvWarmupTime.IntValue = 10000;
 }
