@@ -1,3 +1,4 @@
+//danl: 	STEAM_1:1:432977205
 #pragma semicolon 1
 
 #define DEBUG
@@ -37,9 +38,38 @@ public void OnPluginStart()
 	}
 	
 	if(_debug)PrintToServer("---> plugin01 loaded");
+	
+	HookEvent("player_connect_full", onFullConnect, EventHookMode_Pre);
+}
+
+public Action onFullConnect(Event event, const char[] name, bool dontbroadcast)
+{
+	if(_debug)PrintToServer("---> Player connected");
+	
+	int client = GetClientOfUserId(GetEventInt(event, "userid"));
+	
+	ChangeClientTeam(client, CS_TEAM_SPECTATOR);
 }
 
 public void OnMapStart()
 {
 	if(_debug)PrintToServer("---> New map started");
 }
+
+public int getClientIndex(char[] authString)
+{
+	for (int i = 1; i <= MaxClients; ++i)
+	{
+		if(IsClientInGame(i))
+		{
+			char sAuth[32];
+			GetClientAuthId(i, AuthId_Steam2, sAuth, 32);
+			if(StrEqual(authString, sAuth))
+			{
+				return i;
+			}
+		}
+	}
+	return -1;
+}
+
